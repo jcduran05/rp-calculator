@@ -3,17 +3,18 @@ import { Col, Row } from 'react-bootstrap';
 import FormGroupCreator from './FormGroupCreator';
 
 function PropertyInfo(props) {
-	let { formDetails } = props;
-	// let formCompoents = formDetails.map((item) =>{
-		console.log(formDetails)
-	// });
+	let { formDetails, state } = props;
+	let changeHandler = props.onChange;
 	let formComponents = [];
 
 	for (let key in formDetails) {
 		formComponents.push(<FormGroupCreator 
 			key={key} 
-			id={key} 
-			details={formDetails[key]}/>)
+			id={key}
+			state={state}
+			formDetails={formDetails[key]}
+			onChange={changeHandler}
+			/>)
 	}
 
 	return (

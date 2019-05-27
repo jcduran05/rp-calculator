@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useInput } from '../Hooks/InputHook';
 import './App.css';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Container, Col, Form, Button } from 'react-bootstrap';
@@ -6,37 +7,50 @@ import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
 
-let form = {
-  reportTitle: {value: 'Test'},
-  propertyAddress: {value: ''},
-  city: {value: ''},
-  state: {value: ''},
-  zip: {value: ''},
-
-  purchasePrice: {value: 0},
-  repairCost: {value: 0},
-  annualPropertyTaxes: {value: 0},
-  purchaseClosingCost: {value: 0},
-  afterRepairValue: {value: 0},
-
-  downPaymentPercent: {value: 0},
-  loanInterestRate: {value: 0},
-  amortizedOverHowManyYears: {value: 0},
-};
-
 let formDetails = {
-  PropertyInfo: {
+  propertyInfo: {
     reportTitle: {
       type: 'input',
+      placeholder: '',
       size: {
+        default: 12,
+        sm: 12,
         md: 12
+      }
+    },
+    propertyAddress: {
+      type: 'input',
+      placeholder: '',
+      size: {
+        default: 12,
+      }
+    },
+    city: {
+      type: 'input',
+      placeholder: '',
+      size: {
+        default: 4,
+      }
+    },
+    state: {
+      type: 'input',
+      placeholder: '',
+      size: {
+        default: 4,
+      }
+    },
+    zip: {
+      type: 'input',
+      placeholder: '',
+      size: {
+        default: 4,
       }
     }
   },
-  PurchaseInfo: {
+  purchaseInfo: {
 
   },
-  RentalInfo: {
+  pentalInfo: {
 
   }
 };
@@ -44,18 +58,36 @@ let formDetails = {
 class App extends Component {
   constructor(props) {
     super(props);
+    // const { value:firstName, bind:bindFirstName, reset:resetFirstName } = useInput('');
+    // const { value:lastName, bind:bindLastName, reset:resetLastName } = useInput('');
       this.state = {
-        form
-      };
+        // Property Info
+        reportTitle: 'Test',
+        propertyAddress: '',
+        city: '',
+        state: '',
+        zip: '',
+
+      purchaseInfo: {
+        // purchasePrice: {value: 0},
+        // repairCost: {value: 0},
+        // annualPropertyTaxes: {value: 0},
+        // purchaseClosingCost: {value: 0},
+        // afterRepairValue: {value: 0}
+      },
+      pentalInfo: {
+        // downPaymentPercent: {value: 0},
+        // loanInterestRate: {value: 0},
+        // amortizedOverHowManyYears: {value: 0}
+      }
+    };
   }
 
   changeHandler = event => {
-    const name = event.target.name;
+    const name = event.target.id;
     const value = event.target.value;
     this.setState({
-        form: {
-          [name]: value
-        }
+      [name]: value
     });
   }
 
@@ -70,7 +102,10 @@ class App extends Component {
           <Container>
             <Col md={{ span: 8, offset: 2 }}>
               <Form onSubmit={this.submitFormHandler}>
-                <PropertyInfo formDetails={formDetails.PropertyInfo} />
+                <PropertyInfo state={this.state} 
+                formDetails={formDetails.propertyInfo} 
+                onChange={this.changeHandler}
+                />
                 <PurchaseInfo />
                 <RentalInfo />
                 <Button variant="primary" type="submit">

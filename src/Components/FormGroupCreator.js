@@ -2,42 +2,40 @@ import React from 'react';
 import { Col, Form } from 'react-bootstrap';
 
 function FormGroupCreator(props) {
-	console.log("==========");
-	console.log(props);
-	console.log("==========");
-
+	const { formDetails } = props;
+	let changeHandler = props.onChange;
+	let formGroupState = props.state[props.id]
 	let formattedLabel = props.id.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
 	formattedLabel = formattedLabel.charAt(0).toUpperCase() + formattedLabel.slice(1);
 
-	let groupDetails= {
-		id: props.id,
-		label: formattedLabel,
-		classes: '',
- 		type: props.details.type,
-		size: {
-			md: 12
-		}
-	}
-
 	let formType = [];
-	if (groupDetails.type == 'input') {
+	if (formDetails.type == 'input') {
 		formType.push(<Form.Control 
-			key={props.id} 
+			key={props.id}
+			name={props.id}
 			type="input"
-			value=""
-			placeholder="$" 
+			value={formGroupState}
+			placeholder={formDetails.placeholder}
+			onChange={changeHandler}
 		/>);
 	}
 
 
 	return (
-		<Col md={groupDetails.size.md}>
-			<Form.Group controlId={groupDetails.id}>
-				<Form.Label>{groupDetails.label}</Form.Label>
+		<Col sm={formDetails.size.default} md={formDetails.size.default}>
+			<Form.Group controlId={props.id}>
+				<Form.Label>{formattedLabel}</Form.Label>
 				{formType}
 			</Form.Group>
 		</Col>
 	)
 };
+
+{/* <Col md={6}>
+<Form.Group controlId="rpPurchasePrice">
+  <Form.Label>Purchase Price</Form.Label>
+  <Form.Control type="input" placeholder="$" />
+</Form.Group>
+</Col> */}
 
 export default FormGroupCreator;
