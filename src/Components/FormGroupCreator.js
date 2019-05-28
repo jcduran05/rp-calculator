@@ -9,7 +9,7 @@ function FormGroupCreator(props) {
 	formattedLabel = formattedLabel.charAt(0).toUpperCase() + formattedLabel.slice(1);
 
 	let formType = [];
-	if (formDetails.type == 'input') {
+	if (formDetails.type === 'input') {
 		formType.push(<Form.Control 
 			key={props.id}
 			name={props.id}
@@ -20,7 +20,6 @@ function FormGroupCreator(props) {
 		/>);
 	}
 
-
 	return (
 		<Col sm={formDetails.size.default} md={formDetails.size.default}>
 			<Form.Group controlId={props.id}>
@@ -30,12 +29,5 @@ function FormGroupCreator(props) {
 		</Col>
 	)
 };
-
-{/* <Col md={6}>
-<Form.Group controlId="rpPurchasePrice">
-  <Form.Label>Purchase Price</Form.Label>
-  <Form.Control type="input" placeholder="$" />
-</Form.Group>
-</Col> */}
 
 export default FormGroupCreator;

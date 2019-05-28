@@ -7,6 +7,13 @@ import formDetails from './FormData';
 import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
+import Analysis from './Analysis/';
+
+/* Things to do
+1. Find way to make sure state and formData match
+2. onChange should not change int to strings
+3. Add routing to break form into sections and final analysis page
+*/
 
 class App extends Component {
   constructor(props) {
@@ -87,9 +94,11 @@ class App extends Component {
                 formDetails={formDetails.pentalInfo} 
                 onChange={this.changeHandler}
                 />
-                <Button variant="primary" type="submit">
+                {/* <Button variant="primary" type="submit">
                   Submit
-                </Button>
+                </Button> */}
+                <br/>
+                <Analysis formState={this.state}/>
               </Form>
             </Col>
           </Container>
