@@ -3,83 +3,56 @@ import { useInput } from '../Hooks/InputHook';
 import './App.css';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Container, Col, Form, Button } from 'react-bootstrap';
+import formDetails from './FormData';
 import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
 
-let formDetails = {
-  propertyInfo: {
-    reportTitle: {
-      type: 'input',
-      placeholder: '',
-      size: {
-        default: 12,
-        sm: 12,
-        md: 12
-      }
-    },
-    propertyAddress: {
-      type: 'input',
-      placeholder: '',
-      size: {
-        default: 12,
-      }
-    },
-    city: {
-      type: 'input',
-      placeholder: '',
-      size: {
-        default: 4,
-      }
-    },
-    state: {
-      type: 'input',
-      placeholder: '',
-      size: {
-        default: 4,
-      }
-    },
-    zip: {
-      type: 'input',
-      placeholder: '',
-      size: {
-        default: 4,
-      }
-    }
-  },
-  purchaseInfo: {
-
-  },
-  pentalInfo: {
-
-  }
-};
-
 class App extends Component {
   constructor(props) {
     super(props);
-    // const { value:firstName, bind:bindFirstName, reset:resetFirstName } = useInput('');
-    // const { value:lastName, bind:bindLastName, reset:resetLastName } = useInput('');
+      // const { value:firstName, bind:bindFirstName, reset:resetFirstName } = useInput('');
+      // const { value:lastName, bind:bindLastName, reset:resetLastName } = useInput('');
       this.state = {
         // Property Info
-        reportTitle: 'Test',
+        reportTitle: '',
         propertyAddress: '',
         city: '',
         state: '',
         zip: '',
+        
+        // Purchase Info
+        purchasePrice: 0,
+        repairCost: 0,
+        annualPropertyTaxes: 0,
+        purchaseClosingCost: 0,
+        afterRepairValue: 0,
 
-      purchaseInfo: {
-        // purchasePrice: {value: 0},
-        // repairCost: {value: 0},
-        // annualPropertyTaxes: {value: 0},
-        // purchaseClosingCost: {value: 0},
-        // afterRepairValue: {value: 0}
-      },
-      pentalInfo: {
-        // downPaymentPercent: {value: 0},
-        // loanInterestRate: {value: 0},
-        // amortizedOverHowManyYears: {value: 0}
-      }
+        downPaymentPercent: 0,
+        loanInterestRate: 0,
+        amortizedOverHowManyYears: 0,
+
+        // Rental Income
+        totalGrossMonthlyIncome: 0,
+        otherMonthlyIncome: 0,
+        electricity: 0,
+        waterAndSewer: 0,
+        garbage: 0,
+        pmi: 0,
+        hoas: 0,
+        monthlyInsurance: 0,
+        propertyTaxes: 0,
+        otherExpenses: 0,
+
+        vacancy: 0,
+        maintenance : 0,
+        capitalExpenditure: 0,
+        managementFee: 0,
+
+        annualIncomeGrowth: 0,
+        annualPVGrowth: 0,
+        annualExpensesGrowth: 0,
+        salesExpenses: 0,
     };
   }
 
@@ -106,8 +79,14 @@ class App extends Component {
                 formDetails={formDetails.propertyInfo} 
                 onChange={this.changeHandler}
                 />
-                <PurchaseInfo />
-                <RentalInfo />
+                <PurchaseInfo state={this.state} 
+                formDetails={formDetails.purchaseInfo} 
+                onChange={this.changeHandler}
+                />
+                <RentalInfo state={this.state} 
+                formDetails={formDetails.pentalInfo} 
+                onChange={this.changeHandler}
+                />
                 <Button variant="primary" type="submit">
                   Submit
                 </Button>
