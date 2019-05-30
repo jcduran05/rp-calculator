@@ -1,8 +1,11 @@
 import React from 'react';
+import Chart from "chart.js";
 import { Col, Row } from 'react-bootstrap';
+import PieGraph from './PieGraph';
 
 function Analysis(props) {
-  let { formState } = props;
+  const propertyID = props.match.params.id;
+  const property = props.properties[propertyID];
   let {
     // Proper,
     reportTitle,
@@ -42,25 +45,22 @@ function Analysis(props) {
     annualPVGrowth,
     annualExpensesGrowth,
     salesExpenses
-  } = formState;
+  } = property;
+  console.log('this is the property ', property);
 
   //Income
-  let monthlyIncome = parseInt(totalGrossMonthlyIncome) + parseInt(otherMonthlyIncome);
+  property.monthlyIncome = parseInt(totalGrossMonthlyIncome) + parseInt(otherMonthlyIncome);
   // Expenses breakdown
-  let { vacancyMonthly,
-    maintenanceMonthly,
-    capitalExpenditureMonthly,
-    managementFeeMonthly} = 0;
-  vacancyMonthly = monthlyIncome * (parseInt(vacancy)/100);
-  maintenanceMonthly = monthlyIncome * (parseInt(maintenance)/100);
-  capitalExpenditureMonthly = monthlyIncome * (parseInt(capitalExpenditure)/100);
-  managementFeeMonthly = monthlyIncome * (parseInt(managementFee)/100);
-
-  propertyTaxes = annualPropertyTaxes / 12;
-  let monthlyExpenses = electricity+waterAndSewer+garbage+pmi+hoas+monthlyInsurance+propertyTaxes+otherExpenses;
+  property.vacancyMonthly = property.monthlyIncome * (parseInt(vacancy)/100);
+  property.maintenanceMonthly = property.monthlyIncome * (parseInt(maintenance)/100);
+  property.capitalExpenditureMonthly = property.monthlyIncome * (parseInt(capitalExpenditure)/100);
+  property.managementFeeMonthly = property.monthlyIncome * (parseInt(managementFee)/100);
+  property.monthlyPropertyTaxes = annualPropertyTaxes / 12;
+  property.monthlyExpenses = electricity+waterAndSewer+garbage+pmi+hoas+monthlyInsurance+propertyTaxes+otherExpenses;
 
   return (
     <Row>
+      <PieGraph data={property}/>
     </Row>
   );
 }
