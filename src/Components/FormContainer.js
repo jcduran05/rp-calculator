@@ -6,7 +6,6 @@ import formDetails from './FormData';
 import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
-import Analysis from './Analysis/';
 
 class FormContainer extends Component {
   constructor(props) {
@@ -96,8 +95,6 @@ class FormContainer extends Component {
             <Button variant="primary" type="submit">
                 Submit
             </Button>
-            <br/>
-            <Analysis formState={this.state}/>
         </Form>
     )
   }

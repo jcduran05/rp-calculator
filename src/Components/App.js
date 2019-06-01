@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../firebase.js'; // configs ignored file
 import { useInput } from '../Hooks/InputHook';
 import './App.css';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import Home from './Home';
 import Analysis from './Analysis';
@@ -53,17 +53,20 @@ class App extends Component {
     }
 
     return (
-      <Router>
+      
         <div className="App">
           <Container>
             <Col md={12}>
-              <Route exact path="/" render={props => <Home {...props} properties={this.state.properties} />} />
-              <Route exact path="/create" component={FormContainer} />
-              <Route exact path="/show/:id" render={props => <Analysis {...props} properties={this.state.properties} />} />
+            <Router>
+              <Switch>
+              <Route exact path="/" component={() => <Home properties={this.state.properties} />} />
+              <Route exact path="/create" component={() => <FormContainer/>} />
+              <Route exact path="/show/:id" component={props => <Analysis {...props} properties={this.state.properties} />} />
+              </Switch> 
+            </Router>
             </Col>
           </Container>
         </div>
-      </Router>
     )
   }
 };

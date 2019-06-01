@@ -6,7 +6,6 @@ function UserReports(props) {
     let { properties } = props;
     
     let propertiesArr = properties.map((property, idx) => {
-        console.log(property);
         return (
         <tr key={idx}>
             <td>{idx + 1}</td>

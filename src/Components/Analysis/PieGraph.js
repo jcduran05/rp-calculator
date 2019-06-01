@@ -20,10 +20,10 @@ export default class LineGraph extends PureComponent {
         const myChartRef = this.chartRef.current.getContext("2d");
         let stateArr = [];
         for (let expense in this.state) {
-            console.log(this.state);
+            // console.log(this.state);
             stateArr.push(this.state[expense])
         }
-        console.log(stateArr);
+        // console.log(stateArr);
         new Chart(myChartRef, {
             type: "pie",
             data: {
