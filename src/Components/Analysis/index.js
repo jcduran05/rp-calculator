@@ -47,29 +47,41 @@ function Analysis(props) {
     salesExpenses
   } = property;
 
-  // Initial Expenses
-  property.totalCashNeeded = (parseInt(purchasePrice) * (parseInt(downPaymentPercent))/100) 
-  + parseInt(repairCost) + parseInt(purchaseClosingCost);
-  property.totalCashNeeded = Math.ceil(property.totalCashNeeded);
+  // Total Cash Needed
+  property.totalCashNeeded = Math.ceil((parseInt(purchasePrice) * (parseInt(downPaymentPercent))/100) 
+  + parseInt(repairCost) + parseInt(purchaseClosingCost));
   let totalCashNeeded = property.totalCashNeeded;
 
-  // Income
+  // Monthly Income
   property.monthlyIncome = parseInt(totalGrossMonthlyIncome) + parseInt(otherMonthlyIncome);
   let monthlyIncome = property.monthlyIncome;
 
-  // Expenses breakdown
+  // Monthly Expenses
+    // ** Principal and Interest Payment Calculation **
+    let r = 1 + 0.01 * loanInterestRate / 12;
+    let o = 12 * amortizedOverHowManyYears;
+    let n = purchasePrice / ((1 - 1 / Math.pow(r, o)) / (0.01 * loanInterestRate / 12));
+    property.paymentInterestPayment = Math.ceil(n);
+
   property.vacancyMonthly = monthlyIncome * (parseInt(vacancy)/100);
   property.maintenanceMonthly = monthlyIncome * (parseInt(maintenance)/100);
   property.capitalExpenditureMonthly = monthlyIncome * (parseInt(capitalExpenditure)/100);
   property.managementFeeMonthly = monthlyIncome * (parseInt(managementFee)/100);
   property.monthlyPropertyTaxes = parseInt(annualPropertyTaxes) / 12;
-  property.totalOperatingExpenses = electricity+waterAndSewer+garbage+pmi+hoas+monthlyInsurance+otherExpenses;
-  let { vacancyMonthly,maintenanceMonthly,capitalExpenditureMonthly,
-  managementFeeMonthly, monthlyPropertyTaxes, totalOperatingExpenses } = property;
-  propertyTaxes = annualPropertyTaxes/12;
-  let monthlyExpenses = totalOperatingExpenses + propertyTaxes;
+  property.totalOperatingExpenses = electricity+waterAndSewer+garbage+parseInt(pmi)+hoas+parseInt(monthlyInsurance)+otherExpenses;
 
-  let capRate = ((monthlyIncome*12 +  monthlyExpenses*12) / purchasePrice)*100;
+
+  let { vacancyMonthly,maintenanceMonthly,capitalExpenditureMonthly,
+    managementFeeMonthly, monthlyPropertyTaxes, totalOperatingExpenses, paymentInterestPayment } = property;
+  propertyTaxes = annualPropertyTaxes/12;
+  let monthlyExpenses = Math.ceil(totalOperatingExpenses + propertyTaxes + paymentInterestPayment);
+
+  // Monthly Cashflow
+  property.monthlyCashflow = monthlyIncome - monthlyExpenses;
+  let monthlyCashflow = property.monthlyCashflow;
+
+  // Cap Rate
+  let capRate = ((monthlyIncome*12 +  monthlyExpenses*12) / parseInt(purchasePrice))*100;
   capRate = capRate.toFixed(2);
 
   let numberWithCommas = (x) => {
@@ -99,7 +111,7 @@ function Analysis(props) {
         </Col>
         <Col md={3} className="text-center">
           <h5>Monthly Cashflow</h5>
-          ${purchasePrice}
+          ${monthlyCashflow}
         </Col>
         <Col md={3} className="text-center">
           <h5>Cap Rate</h5>
@@ -107,7 +119,13 @@ function Analysis(props) {
         </Col>
       </Row>
 
-      <PieGraph data={property}/>
+      <Row className="row-border">
+        <Col md={6} className="text-center">
+        </Col>
+        <Col md={6} className="text-center">
+          <PieGraph data={property}/>
+        </Col>
+      </Row>
     </div>
   );
 }
