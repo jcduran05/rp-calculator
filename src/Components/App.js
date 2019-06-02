@@ -11,8 +11,10 @@ import FormContainer from './FormContainer';
 /* Things to do
 1. Find way to make sure state and formData match
 2. onChange should not change int to strings
-3. Add routing to break form into sections and final analysis page
-4  Storage through firebase to retrieve old reports
+3. Add routing to break form into sections and final analysis page DONE
+4. Storage through firebase to retrieve old reports DONE
+5. Design layout analysis page
+6. Add form validation
 */
 
 class App extends Component {
