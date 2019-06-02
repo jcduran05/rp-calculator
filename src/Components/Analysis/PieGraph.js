@@ -11,7 +11,7 @@ export default class LineGraph extends PureComponent {
             Property: props.data.monthlyPropertyTaxes,
             Repairs: props.data.maintenanceMonthly,
             Insurance: props.data.monthlyInsurance,
-            pni: props.data.capitalExpenditureMonthly,
+            pni: props.data.paymentInterestPayment,
         }
     }
     chartRef = React.createRef();

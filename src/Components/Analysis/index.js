@@ -52,6 +52,12 @@ function Analysis(props) {
   + parseInt(repairCost) + parseInt(purchaseClosingCost));
   let totalCashNeeded = property.totalCashNeeded;
 
+  // Down Payment
+  property.downPayment = parseInt(purchasePrice) * (parseInt(downPaymentPercent)/100);
+  let downPayment = property.downPayment;
+  property.loanAmount = purchasePrice - downPayment;
+  let loanAmount = property.loanAmount;
+  
   // Monthly Income
   property.monthlyIncome = parseInt(totalGrossMonthlyIncome) + parseInt(otherMonthlyIncome);
   let monthlyIncome = property.monthlyIncome;
@@ -60,28 +66,37 @@ function Analysis(props) {
     // ** Principal and Interest Payment Calculation **
     let r = 1 + 0.01 * loanInterestRate / 12;
     let o = 12 * amortizedOverHowManyYears;
-    let n = purchasePrice / ((1 - 1 / Math.pow(r, o)) / (0.01 * loanInterestRate / 12));
-    property.paymentInterestPayment = Math.ceil(n);
+    let n = loanAmount / ((1 - 1 / Math.pow(r, o)) / (0.01 * loanInterestRate / 12));
+    property.paymentInterestPayment = parseFloat(n.toFixed(2));
+
 
   property.vacancyMonthly = monthlyIncome * (parseInt(vacancy)/100);
   property.maintenanceMonthly = monthlyIncome * (parseInt(maintenance)/100);
   property.capitalExpenditureMonthly = monthlyIncome * (parseInt(capitalExpenditure)/100);
   property.managementFeeMonthly = monthlyIncome * (parseInt(managementFee)/100);
   property.monthlyPropertyTaxes = parseInt(annualPropertyTaxes) / 12;
-  property.totalOperatingExpenses = electricity+waterAndSewer+garbage+parseInt(pmi)+hoas+parseInt(monthlyInsurance)+otherExpenses;
-
-
+  
   let { vacancyMonthly,maintenanceMonthly,capitalExpenditureMonthly,
-    managementFeeMonthly, monthlyPropertyTaxes, totalOperatingExpenses, paymentInterestPayment } = property;
-  propertyTaxes = annualPropertyTaxes/12;
-  let monthlyExpenses = Math.ceil(totalOperatingExpenses + propertyTaxes + paymentInterestPayment);
+    managementFeeMonthly, monthlyPropertyTaxes, paymentInterestPayment } = property;
+  property.totalOperatingExpenses = parseInt(electricity) + parseInt(waterAndSewer) + parseInt(garbage)
+  + parseInt(pmi) + parseInt(hoas) + parseInt(monthlyInsurance)
+  + parseInt(otherExpenses) + vacancyMonthly +maintenanceMonthly
+  + capitalExpenditureMonthly + managementFeeMonthly + monthlyPropertyTaxes
+  let totalOperatingExpenses = property.totalOperatingExpenses;
+
+
+  let monthlyExpenses = Math.ceil(totalOperatingExpenses + paymentInterestPayment);
 
   // Monthly Cashflow
   property.monthlyCashflow = monthlyIncome - monthlyExpenses;
   let monthlyCashflow = property.monthlyCashflow;
 
   // Cap Rate
-  let capRate = ((monthlyIncome*12 +  monthlyExpenses*12) / parseInt(purchasePrice))*100;
+  property.purchaseCapRate = ((((monthlyIncome*12) - (totalOperatingExpenses*12)) / parseInt(purchasePrice)) * 100).toFixed(2);
+  let purchaseCapRate = property.purchaseCapRate;
+
+  //
+  let capRate = ((monthlyIncome*12) + (monthlyExpenses*12) / parseInt(purchasePrice))*100;
   capRate = capRate.toFixed(2);
 
   let numberWithCommas = (x) => {
@@ -115,7 +130,7 @@ function Analysis(props) {
         </Col>
         <Col md={3} className="text-center">
           <h5>Cap Rate</h5>
-          {capRate}%
+          {purchaseCapRate}%
         </Col>
       </Row>
 
