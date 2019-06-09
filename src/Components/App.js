@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import firebase from '../firebase.js'; // configs ignored file
 import { useInput } from '../Hooks/InputHook';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Container, Col, Form, Button } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Container, Col, Navbar, Nav } from 'react-bootstrap';
 import Home from './Home';
 import Analysis from './Analysis';
 import FormContainer from './FormContainer';
@@ -55,8 +55,14 @@ class App extends Component {
     }
 
     return (
-      
         <div className="App">
+          <Navbar bg="dark" variant="dark">
+            <Navbar.Brand href="/">RE Calculator</Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/create">Create Report</Nav.Link>
+            </Nav>
+          </Navbar>
           <Container>
             <Col md={12}>
             <Router>

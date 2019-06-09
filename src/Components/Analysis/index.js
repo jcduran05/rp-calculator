@@ -105,6 +105,9 @@ function Analysis(props) {
 
   return (
     <div>
+      <Row>
+        <h2>{propertyAddress}, {city}, {state}, {zip}</h2>
+      </Row>
       <Row className="row-border">
 			  <Col md={6} className="text-center">
           <h5>Purchase Price</h5>
