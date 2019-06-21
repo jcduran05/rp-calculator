@@ -18,12 +18,16 @@ function UserReports(props) {
 	return (
 		<Row className="row-border">
             <Col md={12}>
+                <h4>Reports Created</h4>
+            </Col>
+            <Col md={12}>
 			<Table responsive>
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Title</th>
                         <th>Analysis</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>

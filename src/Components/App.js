@@ -35,6 +35,7 @@ class App extends Component {
       let keyCounter = 0;
 		  for (let property in properties) {
         properties[property].key = keyCounter;
+        properties[property].firebaseKey = property;
         newState.push(properties[property]);
         keyCounter++;
 		  }
@@ -42,7 +43,16 @@ class App extends Component {
 			  properties: newState
 		  });
 		});
-	}
+  }
+  
+  delete(id){
+    firebase.firestore().collection('properties').doc(id).delete().then(() => {
+      console.log("Report deleted!");
+      this.props.history.push("/")
+    }).catch((error) => {
+      console.error("Error removing report: ", error);
+    });
+  }
 
   render() {
     // Initial html when data hasn't been received
