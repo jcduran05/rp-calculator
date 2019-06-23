@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import firebase from '../firebase.js'; // configs ignored file
-import { useInput } from '../Hooks/InputHook';
-import './App.css';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import PropertiesProvider from './PropertiesProvider';
+
+import './App.css';
 import { Container, Col, Navbar, Nav } from 'react-bootstrap';
+
 import Home from './Home';
 import Analysis from './Analysis';
 import FormContainer from './FormContainer';
@@ -11,82 +12,35 @@ import FormContainer from './FormContainer';
 /* Things to do
 1. Find way to make sure state and formData match
 2. onChange should not change int to strings
-3. Add routing to break form into sections and final analysis page DONE
-4. Storage through firebase to retrieve old reports DONE
-5. Design layout analysis page
-6. Add form validation
+3. Design layout analysis page
+4. Add form validation
 */
 
-class App extends Component {
-	constructor(props) {
-		super(props);
-	
-		this.state = {
-		  loading: true,
-		  properties: []
-		} 
-  }
-  
-  componentDidMount() {
-		const propertiesRef = firebase.database().ref('properties');
-		propertiesRef.on('value', (snapshot) => {
-		  let properties = snapshot.val();
-      let newState = [];
-      let keyCounter = 0;
-		  for (let property in properties) {
-        properties[property].key = keyCounter;
-        properties[property].firebaseKey = property;
-        newState.push(properties[property]);
-        keyCounter++;
-		  }
-		  this.setState({
-			  properties: newState
-		  });
-		});
-  }
-  
-  delete(id){
-    firebase.firestore().collection('properties').doc(id).delete().then(() => {
-      console.log("Report deleted!");
-      this.props.history.push("/")
-    }).catch((error) => {
-      console.error("Error removing report: ", error);
-    });
-  }
-
-  render() {
-    // Initial html when data hasn't been received
-    if (Object.keys(this.state.properties).length === 0) {
-      return (
-        <div>
-          <div className="col-md-12">loading ...</div>
-        </div>
-      )
-    }
-
-    return (
-        <div className="App">
-          <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="/">RE Calculator</Navbar.Brand>
-            <Nav className="mr-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/create">Create Report</Nav.Link>
-            </Nav>
-          </Navbar>
-          <Container>
-            <Col md={12}>
-            <Router>
-              <Switch>
-              <Route exact path="/" component={() => <Home properties={this.state.properties} />} />
-              <Route exact path="/create" component={() => <FormContainer/>} />
-              <Route exact path="/show/:id" component={props => <Analysis {...props} properties={this.state.properties} />} />
-              </Switch> 
-            </Router>
-            </Col>
-          </Container>
-        </div>
-    )
-  }
+function App(props) {
+  return (
+    <div className="App">
+      <Navbar bg="dark" variant="dark">
+        <Navbar.Brand href="/">RE Calculator</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/create">Create Report</Nav.Link>
+        </Nav>
+      </Navbar>
+      <Container>
+        <Col md={12}>
+        <PropertiesProvider>
+        <Router>
+          <Switch>
+          <Route exact path="/" component={() => <Home />} />
+          <Route exact path="/create" component={() => <FormContainer/>} />
+          <Route exact path="/show/:id" component={props => <Analysis {...props} />} />
+          </Switch> 
+        </Router>
+        </PropertiesProvider>
+        </Col>
+      </Container>
+    </div>
+  )
 };
 
 export default App;

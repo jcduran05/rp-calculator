@@ -12,3 +12,7 @@
 	border: .2rem solid #ececec;
 	border-radius: 8px;
 }
+
+.btn-spacer {
+	margin: 0 5px;
+}

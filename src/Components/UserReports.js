@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Table } from 'react-bootstrap';
+import { Col, Row, Table, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 function UserReports(props) {
@@ -11,6 +11,10 @@ function UserReports(props) {
             <td>{idx + 1}</td>
             <td>{property.reportTitle}</td>
             <td><Link to={`/show/${property.key}`}>Report</Link></td>
+            <td>
+                <Button variant="outline-primary" size="sm" className="btn-spacer">edit</Button>
+                <Button variant="outline-danger" size="sm" className="btn-spacer">delete</Button>
+            </td>
         </tr>
         )
     });
