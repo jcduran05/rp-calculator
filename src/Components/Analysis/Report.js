@@ -1,102 +1,50 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import PieGraph from './PieGraph';
+import OverYears from './OverYears';
 
 function Report(props) {
   const propertyID = props.routingProps.match.params.id;
-  const property = props.properties[propertyID];
-  let {
-    // Property Info,
-    reportTitle,
-    propertyAddress,
-    city,
-    state,
-    zip,
-    // Purchase Info
-    purchasePrice,
-    repairCost,
-    annualPropertyTaxes,
-    purchaseClosingCost,
-    afterRepairValue,
-
-    downPaymentPercent,
-    loanInterestRate,
-    amortizedOverHowManyYears,
-
-    // Rental Income
-    totalGrossMonthlyIncome,
-    otherMonthlyIncome,
-    electricity,
-    waterAndSewer,
-    garbage,
-    pmi,
-    hoas,
-    monthlyInsurance,
-    propertyTaxes,
-    otherExpenses,
-
-    vacancy,
-    maintenance,
-    capitalExpenditure,
-    managementFee,
-
-    annualIncomeGrowth,
-    annualPVGrowth,
-    annualExpensesGrowth,
-    salesExpenses
-  } = property;
+  const p = props.properties[propertyID];
 
   // Total Cash Needed
-  property.totalCashNeeded = Math.ceil((parseInt(purchasePrice) * (parseInt(downPaymentPercent))/100) 
-  + parseInt(repairCost) + parseInt(purchaseClosingCost));
-  let totalCashNeeded = property.totalCashNeeded;
-
+  p.totalCashNeeded = Math.ceil((parseInt(p.purchasePrice) * (parseInt(p.downPaymentPercent))/100) 
+  + parseInt(p.repairCost) + parseInt(p.purchaseClosingCost));
   // Down Payment
-  property.downPayment = parseInt(purchasePrice) * (parseInt(downPaymentPercent)/100);
-  let downPayment = property.downPayment;
-  property.loanAmount = purchasePrice - downPayment;
-  let loanAmount = property.loanAmount;
-  
+  p.downPayment = parseInt(p.purchasePrice) * (parseInt(p.downPaymentPercent)/100);
+  p.loanAmount = p.purchasePrice - p.downPayment;
   // Monthly Income
-  property.monthlyIncome = parseInt(totalGrossMonthlyIncome) + parseInt(otherMonthlyIncome);
-  let monthlyIncome = property.monthlyIncome;
+  p.monthlyIncome = parseInt(p.totalGrossMonthlyIncome) + parseInt(p.otherMonthlyIncome);
 
   // Monthly Expenses
-    // ** Principal and Interest Payment Calculation **
-    let r = 1 + 0.01 * loanInterestRate / 12;
-    let o = 12 * amortizedOverHowManyYears;
-    let n = loanAmount / ((1 - 1 / Math.pow(r, o)) / (0.01 * loanInterestRate / 12));
-    property.paymentInterestPayment = parseFloat(n.toFixed(2));
+  p.vacancyMonthly = p.monthlyIncome * (parseInt(p.vacancy)/100);
+  p.maintenanceMonthly = p.monthlyIncome * (parseInt(p.maintenance)/100);
+  p.capitalExpenditureMonthly = p.monthlyIncome * (parseInt(p.capitalExpenditure)/100);
+  p.managementFeeMonthly = p.monthlyIncome * (parseInt(p.managementFee)/100);
+  p.monthlyPropertyTaxes = parseInt(p.annualPropertyTaxes) / 12;
 
-
-  property.vacancyMonthly = monthlyIncome * (parseInt(vacancy)/100);
-  property.maintenanceMonthly = monthlyIncome * (parseInt(maintenance)/100);
-  property.capitalExpenditureMonthly = monthlyIncome * (parseInt(capitalExpenditure)/100);
-  property.managementFeeMonthly = monthlyIncome * (parseInt(managementFee)/100);
-  property.monthlyPropertyTaxes = parseInt(annualPropertyTaxes) / 12;
+  // ** Principal and Interest Payment Calculation **
+  let r = 1 + 0.01 * p.loanInterestRate / 12;
+  let o = 12 * p.amortizedOverHowManyYears;
+  let n = p.loanAmount / ((1 - 1 / Math.pow(r, o)) / (0.01 * p.loanInterestRate / 12));
+  p.paymentInterestPayment = parseFloat(n.toFixed(2));
   
-  let { vacancyMonthly,maintenanceMonthly,capitalExpenditureMonthly,
-    managementFeeMonthly, monthlyPropertyTaxes, paymentInterestPayment } = property;
-  property.totalOperatingExpenses = parseInt(electricity) + parseInt(waterAndSewer) + parseInt(garbage)
-  + parseInt(pmi) + parseInt(hoas) + parseInt(monthlyInsurance)
-  + parseInt(otherExpenses) + vacancyMonthly +maintenanceMonthly
-  + capitalExpenditureMonthly + managementFeeMonthly + monthlyPropertyTaxes
-  let totalOperatingExpenses = property.totalOperatingExpenses;
+  p.totalOperatingExpenses = parseInt(p.electricity) + parseInt(p.waterAndSewer) + parseInt(p.garbage)
+  + parseInt(p.pmi) + parseInt(p.hoas) + parseInt(p.monthlyInsurance)
+  + parseInt(p.otherExpenses) + p.vacancyMonthly + p.maintenanceMonthly
+  + p.capitalExpenditureMonthly + p.managementFeeMonthly + p.monthlyPropertyTaxes
 
-
-  let monthlyExpenses = Math.ceil(totalOperatingExpenses + paymentInterestPayment);
+  p.monthlyExpenses = Math.ceil(p.totalOperatingExpenses + p.paymentInterestPayment);
 
   // Monthly Cashflow
-  property.monthlyCashflow = monthlyIncome - monthlyExpenses;
-  let monthlyCashflow = property.monthlyCashflow;
+  p.monthlyCashflow = p.monthlyIncome - p.monthlyExpenses;
 
   // Cap Rate
-  property.purchaseCapRate = ((((monthlyIncome*12) - (totalOperatingExpenses*12)) / parseInt(purchasePrice)) * 100).toFixed(2);
-  let purchaseCapRate = property.purchaseCapRate;
+  p.purchaseCapRate = ((((p.monthlyIncome*12) - (p.totalOperatingExpenses*12)) / parseInt(p.purchasePrice)) * 100).toFixed(2);
 
   //
-  let capRate = ((monthlyIncome*12) + (monthlyExpenses*12) / parseInt(purchasePrice))*100;
-  capRate = capRate.toFixed(2);
+  p.capRate = ((p.monthlyIncome*12) + (p.monthlyExpenses*12) / parseInt(p.purchasePrice))*100;
+  p.capRate = p.capRate.toFixed(2);
 
   let numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -105,34 +53,34 @@ function Report(props) {
   return (
     <div>
       <Row>
-        <h2>{propertyAddress}, {city}, {state}, {zip}</h2>
+        <h2>{p.propertyAddress}, {p.city}, {p.state}, {p.zip}</h2>
       </Row>
       <Row className="row-border">
 			  <Col md={6} className="text-center">
           <h5>Purchase Price</h5>
-          ${numberWithCommas(purchasePrice)}
+          ${numberWithCommas(p.purchasePrice)}
         </Col>
         <Col md={6} className="text-center">
           <h5>Total Cash Needed</h5>
-          ${numberWithCommas(totalCashNeeded)}
+          ${numberWithCommas(p.totalCashNeeded)}
         </Col>
       </Row>
       <Row className="row-border">
 			  <Col md={3} className="text-center">
           <h5>Monthly Income</h5>
-          ${monthlyIncome}
+          ${p.monthlyIncome}
         </Col>
         <Col md={3} className="text-center">
           <h5>Monthly Expenses</h5>
-          ${monthlyExpenses}
+          ${p.monthlyExpenses}
         </Col>
         <Col md={3} className="text-center">
           <h5>Monthly Cashflow</h5>
-          ${monthlyCashflow}
+          ${p.monthlyCashflow}
         </Col>
         <Col md={3} className="text-center">
           <h5>Cap Rate</h5>
-          {purchaseCapRate}%
+          {p.purchaseCapRate}%
         </Col>
       </Row>
 
@@ -140,9 +88,11 @@ function Report(props) {
         <Col md={6} className="text-center">
         </Col>
         <Col md={6} className="text-center">
-          <PieGraph data={property}/>
+          <PieGraph data={p} />
         </Col>
       </Row>
+      
+      <OverYears data={p} />
     </div>
   );
 }
