@@ -7,13 +7,14 @@ import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
 
-class FormContainer extends Component {
-  constructor(props) {
-    super(props);
-      this.state = this.initialState();
-  }
+function FormContainer(props) {
+  const propertyID = props.routingProps.match.params.id;
 
-  initialState = () => {
+  let initialState = () => {
+    if (propertyID) {
+      return props.properties[propertyID];;
+    }
+
     return {
       // Property Info
       reportTitle: '',
@@ -55,49 +56,50 @@ class FormContainer extends Component {
       annualExpensesGrowth: 0,
       salesExpenses: 0,
     }
-  }
+  };
 
-  changeHandler = event => {
+  let localState = initialState();
+
+  let changeHandler = event => {
     const name = event.target.id;
     const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
+    // setState({
+    //   [name]: value
+    // });
   }
 
-  submitFormHandler = event => {
+  let submitFormHandler = event => {
     event.preventDefault();
     // Setting up properties "table" and push adds new
     // object instead up resetting a single object
     const propertiesRef = firebase.database().ref('properties');
-    propertiesRef.push({...this.state});
+    propertiesRef.push(localState);
     
-    // const resetstate = this.initialState();
-    // this.setState(resetstate)
+    // const resetstate = initialState();
+    // setState(resetstate)
     return;
   }
 
-  render() {
-    return (
-        <Form onSubmit={this.submitFormHandler}>
-            <PropertyInfo state={this.state} 
-            formDetails={formDetails.propertyInfo} 
-            onChange={this.changeHandler}
-            />
-            <PurchaseInfo state={this.state} 
-            formDetails={formDetails.purchaseInfo} 
-            onChange={this.changeHandler}
-            />
-            <RentalInfo state={this.state} 
-            formDetails={formDetails.pentalInfo} 
-            onChange={this.changeHandler}
-            />
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
-    )
-  }
+  return (
+      <Form onSubmit={submitFormHandler}>
+          <PropertyInfo state={localState} 
+          formDetails={formDetails.propertyInfo} 
+          onChange={changeHandler}
+          />
+          <PurchaseInfo state={localState} 
+          formDetails={formDetails.purchaseInfo} 
+          onChange={changeHandler}
+          />
+          <RentalInfo state={localState} 
+          formDetails={formDetails.pentalInfo} 
+          onChange={changeHandler}
+          />
+          <Button variant="primary" type="submit">
+              Submit
+          </Button>
+      </Form>
+  )
+
 };
 
 export default FormContainer;

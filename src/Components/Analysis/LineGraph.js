@@ -34,7 +34,7 @@ export default class LineGraph extends PureComponent {
                 labels: ["Year 1","Year 2","Year 3","Year 5","Year 10","Year 15","Year 20","Year 30",],
                 datasets: [
                     {
-												label: "Remaining Balanace",
+						label: "Remaining Balanace",
                         data: balance,
                     }
                 ]

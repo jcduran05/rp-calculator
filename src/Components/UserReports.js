@@ -3,8 +3,7 @@ import { Col, Row, Table, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 function UserReports(props) {
-    let { properties } = props;
-    
+    let { properties } = props.state;
     let propertiesArr = properties.map((property, idx) => {
         return (
         <tr key={idx}>
@@ -12,8 +11,13 @@ function UserReports(props) {
             <td>{property.reportTitle}</td>
             <td><Link to={`/show/${property.key}`}>Report</Link></td>
             <td>
-                <Button variant="outline-primary" size="sm" className="btn-spacer">edit</Button>
-                <Button variant="outline-danger" size="sm" className="btn-spacer">delete</Button>
+                <Link className="btn-spacer btn btn-outline-primary btn-sm" 
+                to={`/edit/${idx}`}>Edit</Link>
+                <Button variant="outline-danger" 
+                size="sm" className="btn-spacer" 
+                onClick={() => props.handleDelete(property.firebaseKey)}>
+                delete
+                </Button>
             </td>
         </tr>
         )

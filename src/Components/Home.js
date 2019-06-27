@@ -5,11 +5,16 @@ import { PropertiesConsumer } from './PropertiesProvider';
 function Home (props) {
 	return(
 		<PropertiesConsumer>
-		{(props) => (
+		{(props) => { 
+			return(
 			<div>
-				<UserReports properties={props.properties} />
+				<UserReports state={props.state} 
+				handleDelete={props.handleDelete}
+				handleEdit={props.handleEdit}
+				handleUpdate={props.handleUpdate}
+				/>
 			</div>
-		)}
+		) }}
 		</PropertiesConsumer>
 	)
 };
