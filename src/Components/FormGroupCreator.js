@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Form } from 'react-bootstrap';
 
 function FormGroupCreator(props) {
+	console.log(props);
+
 	const { formDetails } = props;
 	let changeHandler = props.onChange;
 	let formGroupState = props.state[props.id]

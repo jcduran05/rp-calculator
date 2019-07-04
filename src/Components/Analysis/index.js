@@ -8,7 +8,7 @@ function Analysis(props) {
   return (
     <PropertiesConsumer>
     {(props) => (
-      <Report routingProps={routingProps} {...props} />
+      <Report routingProps={routingProps} properties={props.state.properties} />
     )}
     </PropertiesConsumer>
   );

@@ -12,7 +12,7 @@ function FormContainer(props) {
 
   let initialState = () => {
     if (propertyID) {
-      return props.properties[propertyID];;
+      return props.state.properties[propertyID];
     }
 
     return {
@@ -60,15 +60,13 @@ function FormContainer(props) {
 
   let localState = initialState();
 
-  let changeHandler = event => {
+  let changeHandler = (event) => {
     const name = event.target.id;
     const value = event.target.value;
-    // setState({
-    //   [name]: value
-    // });
+    localState[name] = value;
   }
 
-  let submitFormHandler = event => {
+  let submitFormHandler = (event) => {
     event.preventDefault();
     // Setting up properties "table" and push adds new
     // object instead up resetting a single object

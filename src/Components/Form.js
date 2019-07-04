@@ -7,17 +7,9 @@ function Home (props) {
     
 	return(
 		<PropertiesConsumer>
-		{(props) => { 
-			return(
-			<div>
-				<FormContainer properties={props.state.properties} 
-				handleEdit={props.handleEdit}
-                handleUpdate={props.handleUpdate}
-                routingProps={routingProps}
-                {...props}
-				/>
-			</div>
-		) }}
+		{(props) => (
+			<FormContainer routingProps={routingProps} {...props} />
+		)}
 		</PropertiesConsumer>
 	)
 };
