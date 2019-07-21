@@ -109,24 +109,21 @@ class FormContainer extends Component {
 
   submitFormHandler = event => {
     event.preventDefault();
+    let propertyObj = this.state.property
+
+    if(propertyObj.reportTitle.length === 0) this.setState(prevState => ({isValid: false, formErrors: {...prevState.property, reportTitle: "This field is required." }}))
 
     if (this.state.isEdit) {
-      console.log("made it")
-      const propertyKey = this.state.property.firebaseKey
       const updatedProperty = {}
-      console.log(propertyKey)
-      updatedProperty['/properties/' + propertyKey] = this.state.property
-      firebase.database().ref().update(updatedProperty)
-      return;
+      updatedProperty['/properties/' + this.state.property.firebaseKey] = this.state.property
+      return firebase.database().ref().update(updatedProperty)
     } else {
-      // Setting up properties "table" and push adds new
-      // object instead up resetting a single object
+      // Setting up properties "table" and push adds new object instead up
+      // resetting a single object. Promise but no helpful server side error msgs
       const propertiesRef = firebase.database().ref('properties');
-      // propertiesRef.push({...this.state.property});
-
       // const resetstate = this.initialState();
       // this.setState(resetstate)
-      return
+      return propertiesRef.push({...this.state.property})
     }
   }
 
@@ -148,6 +145,7 @@ class FormContainer extends Component {
             <Button variant="primary" type="submit">
                 Submit
             </Button>
+            {!this.state.isValid && <div> {this.state.formErrors.reportTitle} </div>}
             <br/>
         </Form>
     )

@@ -26,6 +26,9 @@ function FormGroupCreator(props) {
 				<Form.Label>{formattedLabel}</Form.Label>
 				{formType}
 			</Form.Group>
+			<Form.Control.Feedback type="invalid">
+            Please provide a valid state.
+         	</Form.Control.Feedback>
 		</Col>
 	)
 };
