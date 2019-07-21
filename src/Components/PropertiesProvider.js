@@ -6,12 +6,16 @@ const PropertiesContext = React.createContext()
 // Create an exportable consumer that can be injected into components
 export const PropertiesConsumer = PropertiesContext.Consumer
 // Create the provider using a traditional React.Component class
+
 class PropertiesProvider extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       loading: true,
       properties: [],
-      property: {}
-  } 
+    }
+  }
 
   componentDidMount() {
     const propertiesRef = firebase.database().ref('properties');
@@ -43,15 +47,7 @@ class PropertiesProvider extends Component {
   }
 
   handleEdit(id) {
-    console.log('made it!')
     return <Redirect to={`/edit/${id}`} />
-  }
-
-  handleUpdate(id, updatedData) {
-    const updatedProperty = {};
-    updatedProperty['/properties/' + id] = updatedData;
-
-    return firebase.database().ref().update(updatedProperty);
   }
 
   render () {
@@ -71,7 +67,6 @@ class PropertiesProvider extends Component {
          state: this.state, 
          handleDelete: this.handleDelete,
          handleEdit: this.handleEdit,
-         handleUpdate: this.handleUpdate
         }}>
         {this.props.children}
       </PropertiesContext.Provider>

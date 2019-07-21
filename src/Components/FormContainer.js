@@ -6,16 +6,52 @@ import formDetails from './FormData';
 import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
+import Analysis from './Analysis/';
 
-function FormContainer(props) {
-  const propertyID = props.routingProps.match.params.id;
-
-  let initialState = () => {
-    if (propertyID) {
-      return props.state.properties[propertyID];
+class FormContainer extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isEdit: false,
+      property: {},
+      isValid: true,
+      formErrors: {
+        reportTitle: '',
+        propertyAddress: '',
+        city: '',
+        state: '',
+        zip: '',
+        annualPropertyTaxes: '',
+        downPaymentPercent: '',
+        loanInterestRate: '',
+        amortizedOverHowManyYears: '',
+        totalGrossMonthlyIncome: '',
+        propertyTaxes: '',
+      }
     }
 
-    return {
+    this.initialState = this.initialState.bind(this)
+    this.changeHandler = this.changeHandler.bind(this)
+    this.submitFormHandler = this.submitFormHandler.bind(this)
+  }
+
+  componentWillMount() {
+    this.initialState()
+  }
+
+  initialState = () => {
+    let properties = this.props.state.properties
+    let propertyId = this.props.routingProps.match.params.id
+
+    if (propertyId) {
+      return this.setState({
+        isEdit: true,
+        property: properties[propertyId]
+      })
+    }
+
+    return this.setState({ 
+      property: {
       // Property Info
       reportTitle: '',
       propertyAddress: '',
@@ -55,49 +91,67 @@ function FormContainer(props) {
       annualPVGrowth: 0,
       annualExpensesGrowth: 0,
       salesExpenses: 0,
-    }
-  };
+      }
+    })
+  }
 
-  let localState = initialState();
-
-  let changeHandler = (event) => {
+  changeHandler = event => {
     const name = event.target.id;
     const value = event.target.value;
-    localState[name] = value;
+    this.setState(prevState => ({ 
+        property: {
+          ...prevState.property,
+          [name]: value
+        }
+      })
+    )
   }
 
-  let submitFormHandler = (event) => {
+  submitFormHandler = event => {
     event.preventDefault();
-    // Setting up properties "table" and push adds new
-    // object instead up resetting a single object
-    const propertiesRef = firebase.database().ref('properties');
-    propertiesRef.push(localState);
-    
-    // const resetstate = initialState();
-    // setState(resetstate)
-    return;
+
+    if (this.state.isEdit) {
+      console.log("made it")
+      const propertyKey = this.state.property.firebaseKey
+      const updatedProperty = {}
+      console.log(propertyKey)
+      updatedProperty['/properties/' + propertyKey] = this.state.property
+      firebase.database().ref().update(updatedProperty)
+      return;
+    } else {
+      // Setting up properties "table" and push adds new
+      // object instead up resetting a single object
+      const propertiesRef = firebase.database().ref('properties');
+      // propertiesRef.push({...this.state.property});
+
+      // const resetstate = this.initialState();
+      // this.setState(resetstate)
+      return
+    }
   }
 
-  return (
-      <Form onSubmit={submitFormHandler}>
-          <PropertyInfo state={localState} 
-          formDetails={formDetails.propertyInfo} 
-          onChange={changeHandler}
-          />
-          <PurchaseInfo state={localState} 
-          formDetails={formDetails.purchaseInfo} 
-          onChange={changeHandler}
-          />
-          <RentalInfo state={localState} 
-          formDetails={formDetails.pentalInfo} 
-          onChange={changeHandler}
-          />
-          <Button variant="primary" type="submit">
-              Submit
-          </Button>
-      </Form>
-  )
-
+  render() {
+    return (
+        <Form onSubmit={this.submitFormHandler}>
+            <PropertyInfo state={this.state.property} 
+            formDetails={formDetails.propertyInfo} 
+            onChange={this.changeHandler}
+            />
+            <PurchaseInfo state={this.state.property} 
+            formDetails={formDetails.purchaseInfo} 
+            onChange={this.changeHandler}
+            />
+            <RentalInfo state={this.state.property} 
+            formDetails={formDetails.pentalInfo} 
+            onChange={this.changeHandler}
+            />
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
+            <br/>
+        </Form>
+    )
+  }
 };
 
 export default FormContainer;

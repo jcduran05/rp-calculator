@@ -8,6 +8,7 @@ import { Container, Col, Navbar, Nav } from 'react-bootstrap';
 import Home from './Home';
 import Analysis from './Analysis';
 import Form from './Form';
+import FormContainer from './FormContainer';
 
 /* Things to do
 1. Find way to make sure state and formData match
@@ -32,7 +33,7 @@ function App(props) {
         <Router>
           <Switch>
           <Route exact path="/" component={() => <Home />} />
-          <Route exact path="/create" component={() => <Form/>} />
+          <Route exact path="/create" component={props => <Form {...props} />} />
           <Route exact path="/show/:id" component={props => <Analysis {...props} />} />
           <Route exact path="/edit/:id" component={props => <Form {...props} />} />
           </Switch> 
