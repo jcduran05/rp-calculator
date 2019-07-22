@@ -10,6 +10,10 @@ export default {
           default: 12,
           sm: 12,
           md: 12
+        },
+        validation: {
+          type: "string",
+          allowNull: false
         }
       },
       propertyAddress: {
@@ -50,6 +54,10 @@ export default {
         placeholder: '$',
         size: {
           default: 6,
+        },
+        validation: {
+          type: "integer",
+          allowNull: false
         }
       },
       repairCost: {

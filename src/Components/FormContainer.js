@@ -98,12 +98,11 @@ class FormContainer extends Component {
   changeHandler = event => {
     const name = event.target.id;
     const value = event.target.value;
-    this.setState(prevState => ({ 
-        property: {
-          ...prevState.property,
-          [name]: value
-        }
-      })
+    this.setState(prevState => ({ property: {
+        ...prevState.property,
+        [name]: value
+      }
+    })
     )
   }
 
@@ -111,7 +110,13 @@ class FormContainer extends Component {
     event.preventDefault();
     let propertyObj = this.state.property
 
-    if(propertyObj.reportTitle.length === 0) this.setState(prevState => ({isValid: false, formErrors: {...prevState.property, reportTitle: "This field is required." }}))
+    // let errList = Object.keys(this.state.formErrors).map (errKey => {
+    //   console.log(propertyObj[errKey])
+    //   console.log(errKey)
+    //   if(propertyObj[errKey].length === 0) this.setState(prevState => ({isValid: false, formErrors: {...prevState.property, [errKey]: `${errKey} This field is required.` }}))
+    // });
+
+    // console.log(this.state.formErrors)
 
     if (this.state.isEdit) {
       const updatedProperty = {}
@@ -129,25 +134,24 @@ class FormContainer extends Component {
 
   render() {
     return (
-        <Form onSubmit={this.submitFormHandler}>
-            <PropertyInfo state={this.state.property} 
-            formDetails={formDetails.propertyInfo} 
-            onChange={this.changeHandler}
-            />
-            <PurchaseInfo state={this.state.property} 
-            formDetails={formDetails.purchaseInfo} 
-            onChange={this.changeHandler}
-            />
-            <RentalInfo state={this.state.property} 
-            formDetails={formDetails.pentalInfo} 
-            onChange={this.changeHandler}
-            />
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-            {!this.state.isValid && <div> {this.state.formErrors.reportTitle} </div>}
-            <br/>
-        </Form>
+      <Form onSubmit={this.submitFormHandler}>
+        <PropertyInfo state={this.state.property} 
+        formDetails={formDetails.propertyInfo} 
+        onChange={this.changeHandler}
+        />
+        <PurchaseInfo state={this.state.property} 
+        formDetails={formDetails.purchaseInfo} 
+        onChange={this.changeHandler}
+        />
+        <RentalInfo state={this.state.property} 
+        formDetails={formDetails.pentalInfo} 
+        onChange={this.changeHandler}
+        />
+        <Button variant="primary" type="submit">
+            Submit
+        </Button>
+        {!this.state.isValid && <div><br/><div className="alert alert-danger" role="alert"> {this.state.formErrors.reportTitle} </div></div>}
+      </Form>
     )
   }
 };

@@ -8,7 +8,6 @@ import { Container, Col, Navbar, Nav } from 'react-bootstrap';
 import Home from './Home';
 import Analysis from './Analysis';
 import Form from './Form';
-import FormContainer from './FormContainer';
 
 /* Things to do
 1. Find way to make sure state and formData match
