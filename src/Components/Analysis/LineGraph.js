@@ -6,7 +6,8 @@ export default class LineGraph extends PureComponent {
         super(props);
         this.state = {
             schedule: props.schedule,
-            yearsAnalysis: props.years
+            yearsAnalysis: props.years,
+            propertyValue: props.propertyValue
         }
     }
     lineChartRef = React.createRef();
@@ -36,6 +37,14 @@ export default class LineGraph extends PureComponent {
                     {
 						label: "Remaining Balanace",
                         data: balance,
+                        borderColor: ['rgba(142, 94, 162)'],
+                        backgroundColor: ['rgba(142, 94, 162, 0.1)'],
+                    },
+                    {
+                        label: "Property Value",
+                        data: this.state.propertyValue,
+                        borderColor: ['rgba(75, 192, 192, 1)'],
+                        backgroundColor: ['rgba(75, 192, 192, 0.1)'],
                     }
                 ]
             },

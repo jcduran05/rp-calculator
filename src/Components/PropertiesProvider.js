@@ -52,13 +52,14 @@ class PropertiesProvider extends Component {
 
   render () {
     // Initial html when data hasn't been received
-    // if (Object.keys(this.state.properties).length === 0) {
-    //   return (
-    //     <div>
-    //       <div className="col-md-12">loading ...</div>
-    //     </div>
-    //   )
-    // }
+    // If no data, will need to comment out to reach create page
+    if (Object.keys(this.state.properties).length === 0) {
+      return (
+        <div>
+          <div className="col-md-12">loading ...</div>
+        </div>
+      )
+    }
     
     return (
       // value prop is where we define what values 
