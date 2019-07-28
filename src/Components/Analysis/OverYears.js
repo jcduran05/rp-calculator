@@ -3,7 +3,7 @@ import { Col, Row, Table, Button } from 'react-bootstrap';
 import LineGraph from './LineGraph';
 
 function OverYears(props) {
-		const p = props.data;		
+		const p = props.data;
 		const years = [1,2,3,5,10,15,20,30];
 
 		const yearsHead = years.map((th, idx) => {
@@ -13,10 +13,12 @@ function OverYears(props) {
 		});
 
 		let currentValue = 0;
+		let propertyValueArr = [];
 		const propertyValueTR = years.map((td, idx) => {
 			if (currentValue === 0) currentValue = parseInt(p.purchasePrice)
 			currentValue = Math.floor(currentValue * (1 + (parseInt(p.annualPVGrowth)/100)))
 
+			propertyValueArr.push(currentValue);
 			return (
 				<td key={td}>{currentValue}</td>
 			)
@@ -74,7 +76,7 @@ function OverYears(props) {
 					</tbody>
 				</Table>
 				<br/>
-				<LineGraph data={p} schedule={testSchedule} years={years} />
+				<LineGraph data={p} schedule={testSchedule} propertyValue={propertyValueArr} years={years} />
 				</Col>
 			</Row>
     );
