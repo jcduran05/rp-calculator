@@ -5,10 +5,12 @@ function FormGroupCreator(props) {
 	const { formDetails } = props // formDetails
 	const fd = formDetails;
 	let changeHandler = props.onChange;
-	let formGroupState = props.state[props.id]
+	let validHandler = props.validHandler;
+	let formGroupState = props.state.property[props.id]
 	let formattedLabel = props.id.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
 	formattedLabel = formattedLabel.charAt(0).toUpperCase() + formattedLabel.slice(1);
 
+	console.log(props.state.formValidation[props.id])
 	let formType = [];
 	if (fd.type === 'input') {
 		formType.push(<Form.Control 
@@ -30,16 +32,24 @@ function FormGroupCreator(props) {
 	})
 	let classNamesFormatted = classNames.join(" ");
 
+	let fieldErr = []
+	if (props.state.formValidation[props.id] !== undefined) {
+		let isInvalid = !props.state.formValidation[props.id].isValid
+		let errMsg = props.state.formValidation[props.id].errMsg
+
+		if (isInvalid) {
+			fieldErr.push(<div><div className="alert alert-danger" role="alert"> {errMsg} </div></div>)
+		}
+	}
+
 	return (
-		// {!this.state.isValid && <div> {this.state.formErrors.reportTitle} </div>}
 		<div className={classNamesFormatted}>
 			<Form.Group controlId={props.id}>
 				<Form.Label>{formattedLabel}</Form.Label>
 				{formType}
+				{props.state.formValidation[props.id] !== undefined && !props.state.formValidation[props.id].isValid ?
+			 	<div className="invalid-feedback"> {props.state.formValidation[props.id].errMsg} </div> : null}
 			</Form.Group>
-			<Form.Control.Feedback type="invalid">
-            Please provide a valid state.
-         	</Form.Control.Feedback>
 		</div>
 	)
 };

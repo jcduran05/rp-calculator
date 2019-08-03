@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import firebase from '../firebase.js'; // configs ignored file
 import './App.css';
 import { Form, Button } from 'react-bootstrap';
@@ -15,18 +16,19 @@ class FormContainer extends Component {
       isEdit: false,
       property: {},
       isValid: true,
-      formErrors: {
-        reportTitle: '',
-        propertyAddress: '',
-        city: '',
-        state: '',
-        zip: '',
-        annualPropertyTaxes: '',
-        downPaymentPercent: '',
-        loanInterestRate: '',
-        amortizedOverHowManyYears: '',
-        totalGrossMonthlyIncome: '',
-        propertyTaxes: '',
+      formValidation: {
+        reportTitle: formDetails.propertyInfo.reportTitle.validation,
+        purchasePrice: formDetails.purchaseInfo.purchasePrice.validation,
+        // propertyAddress: false,
+        // city: false,
+        // state: false,
+        // zip: false,
+        // annualPropertyTaxes: false,
+        // downPaymentPercent: false,
+        // loanInterestRate: false,
+        // amortizedOverHowManyYears: false,
+        // totalGrossMonthlyIncome: false,
+        // propertyTaxes: false,
       }
     }
 
@@ -106,9 +108,48 @@ class FormContainer extends Component {
     )
   }
 
+  validHandler = (id, bool) => {
+    // console.log("valid hdnadler :", event)
+    this.setState(prevState => ({ formValidation: {
+          ...prevState.formValidation,
+          [id]: bool
+        }
+      })
+    )
+
+    // this.setState({isValid: false})
+  }
+
   submitFormHandler = event => {
     event.preventDefault();
     let propertyObj = this.state.property
+
+    for (let validationKey in this.state.formValidation) {
+      let validationObject = this.state.formValidation[validationKey]
+      if (validationObject.notNull && this.state.property[validationKey].length == 0) {
+        this.setState(prevState => ({ formValidation: {
+              ...prevState.formValidation,
+              [validationKey]: {
+                ...prevState.formValidation[validationKey],
+                isValid: false
+              } 
+            }
+          })
+        )
+        this.setState({isValid: false})
+      } else {
+        this.setState(prevState => ({ formValidation: {
+              ...prevState.formValidation,
+              [validationKey]: {
+                ...prevState.formValidation[validationKey],
+                isValid: true
+              } 
+            }
+          })
+        )
+        this.setState({isValid: true})
+      }
+    }
 
     // let errList = Object.keys(this.state.formErrors).map (errKey => {
     //   console.log(propertyObj[errKey])
@@ -118,42 +159,66 @@ class FormContainer extends Component {
 
     // console.log(this.state.formErrors)
 
-    if (this.state.isEdit) {
-      const updatedProperty = {}
-      updatedProperty['/properties/' + this.state.property.firebaseKey] = this.state.property
-      return firebase.database().ref().update(updatedProperty)
+    if (this.state.isValid) {
+
+      if (this.state.isEdit) {
+        const updatedProperty = {}
+        updatedProperty['/properties/' + this.state.property.firebaseKey] = this.state.property
+        return firebase.database().ref().update(updatedProperty)
+      } else {
+        // Setting up properties "table" and push adds new object instead up
+        // resetting a single object. Promise but no helpful server side error msgs
+        const propertiesRef = firebase.database().ref('properties');
+        // const resetstate = this.initialState();
+        // this.setState(resetstate)
+        return propertiesRef.push({...this.state.property})
+      }
+
     } else {
-      // Setting up properties "table" and push adds new object instead up
-      // resetting a single object. Promise but no helpful server side error msgs
-      const propertiesRef = firebase.database().ref('properties');
-      // const resetstate = this.initialState();
-      // this.setState(resetstate)
-      return propertiesRef.push({...this.state.property})
+      console.log("was not valid")
+      return
     }
   }
 
   render() {
     return (
       <Form onSubmit={this.submitFormHandler}>
-        <PropertyInfo state={this.state.property} 
+        <PropertyInfo state={this.state} 
         formDetails={formDetails.propertyInfo} 
         onChange={this.changeHandler}
+        validHandler={this.validHandler}
         />
-        <PurchaseInfo state={this.state.property} 
+        <PurchaseInfo state={this.state} 
         formDetails={formDetails.purchaseInfo} 
         onChange={this.changeHandler}
+        validHandler={this.validHandler}
         />
-        <RentalInfo state={this.state.property} 
+        <RentalInfo state={this.state} 
         formDetails={formDetails.pentalInfo} 
         onChange={this.changeHandler}
+        validHandler={this.validHandler}
         />
         <Button variant="primary" type="submit">
             Submit
         </Button>
-        {!this.state.isValid && <div><br/><div className="alert alert-danger" role="alert"> {this.state.formErrors.reportTitle} </div></div>}
+        {/* {!this.state.isValid && <div><br/><div className="alert alert-danger" role="alert"> {this.state.formErrors.reportTitle} </div></div>} */}
       </Form>
     )
   }
 };
+
+// FormContainer.propTypes = {
+//   reportTitle: PropTypes.string.isRequired,
+//   propertyAddress: PropTypes.string.isRequired,
+//   city: PropTypes.string.isRequired,
+//   state: PropTypes.string.isRequired,
+//   zip: PropTypes.number,
+//   annualPropertyTaxes: PropTypes.number,
+//   downPaymentPercent: PropTypes.number,
+//   loanInterestRate: PropTypes.number,
+//   amortizedOverHowManyYears: PropTypes.number,
+//   totalGrossMonthlyIncome: PropTypes.number,
+//   propertyTaxes: PropTypes.number,
+// };
 
 export default FormContainer;

@@ -5,6 +5,7 @@ import FormGroupCreator from './FormGroupCreator';
 function PropertyInfo(props) {
 	let { formDetails, state } = props;
 	let changeHandler = props.onChange;
+	let validHandler = props.validHandler;
 	let formComponents = [];
 
 	for (let key in formDetails) {
@@ -14,6 +15,7 @@ function PropertyInfo(props) {
 			state={state}
 			formDetails={formDetails[key]}
 			onChange={changeHandler}
+			validHandler={validHandler}
 			/>)
 	}
 

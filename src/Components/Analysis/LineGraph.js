@@ -49,6 +49,7 @@ export default class LineGraph extends PureComponent {
                 ]
             },
             options: {
+                responsive: true,
                 //Customize chart options
                 legend: {
                     display: false,

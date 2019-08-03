@@ -12,8 +12,10 @@ export default {
           md: 12
         },
         validation: {
+          isValid: true,
           type: "string",
-          allowNull: false
+          notNull: true,
+          errMsg: "This field is required."
         }
       },
       propertyAddress: {
@@ -56,8 +58,10 @@ export default {
           default: 6,
         },
         validation: {
+          isValid: true,
           type: "integer",
-          allowNull: false
+          notNull: false,
+          errMsg: "This field is required."
         }
       },
       repairCost: {

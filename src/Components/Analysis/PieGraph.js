@@ -41,6 +41,7 @@ export default class LineGraph extends PureComponent {
                 ]
             },
             options: {
+                responsive: true,
                 //Customize chart options
                 legend: {
                     display: true,
@@ -54,7 +55,6 @@ export default class LineGraph extends PureComponent {
             <div>
                 <canvas
                     id="myChart"
-                    responsive="true"
                     ref={this.chartRef}
                 />
             </div>

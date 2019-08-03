@@ -72,7 +72,6 @@ function OverYears(props) {
 							<th>Propert Value</th>
 							{propertyValueTR}
 						</tr>
-							
 					</tbody>
 				</Table>
 				<br/>

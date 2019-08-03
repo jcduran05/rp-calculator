@@ -83,15 +83,13 @@ function Report(props) {
           {p.purchaseCapRate}%
         </Col>
       </Row>
-
       <Row className="row-border">
         <Col md={6} className="text-center">
         </Col>
-        <Col md={6} className="text-center">
+        <Col md={12} className="text-center">
           <PieGraph data={p} />
         </Col>
-      </Row>
-      
+      </Row>     
       <OverYears data={p} />
     </div>
   );
