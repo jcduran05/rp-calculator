@@ -10,7 +10,6 @@ function FormGroupCreator(props) {
 	let formattedLabel = props.id.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
 	formattedLabel = formattedLabel.charAt(0).toUpperCase() + formattedLabel.slice(1);
 
-	console.log(props.state.formValidation[props.id])
 	let formType = [];
 	if (fd.type === 'input') {
 		formType.push(<Form.Control 

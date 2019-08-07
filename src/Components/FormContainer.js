@@ -7,29 +7,26 @@ import formDetails from './FormData';
 import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
-import Analysis from './Analysis/';
 
 class FormContainer extends Component {
   constructor(props) {
     super(props)
+
+    const formSection = ['propertyInfo', 'purchaseInfo', 'rentalInfo']
+    let formValidationObj = {}
+    formSection.forEach (s => {
+      for (let key in formDetails[s]) {
+        if (formDetails[s][key].hasOwnProperty('validation')) {
+          formValidationObj[key] = formDetails[s][key]['validation']
+        }
+      }
+    })
+
     this.state = {
       isEdit: false,
       property: {},
       isValid: true,
-      formValidation: {
-        reportTitle: formDetails.propertyInfo.reportTitle.validation,
-        purchasePrice: formDetails.purchaseInfo.purchasePrice.validation,
-        // propertyAddress: false,
-        // city: false,
-        // state: false,
-        // zip: false,
-        // annualPropertyTaxes: false,
-        // downPaymentPercent: false,
-        // loanInterestRate: false,
-        // amortizedOverHowManyYears: false,
-        // totalGrossMonthlyIncome: false,
-        // propertyTaxes: false,
-      }
+      formValidation: formValidationObj
     }
 
     this.initialState = this.initialState.bind(this)
@@ -194,7 +191,7 @@ class FormContainer extends Component {
         validHandler={this.validHandler}
         />
         <RentalInfo state={this.state} 
-        formDetails={formDetails.pentalInfo} 
+        formDetails={formDetails.rentalInfo} 
         onChange={this.changeHandler}
         validHandler={this.validHandler}
         />

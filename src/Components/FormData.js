@@ -23,6 +23,12 @@ export default {
         placeholder: '',
         size: {
           default: 12,
+        },
+        validation: {
+          isValid: true,
+          type: "string",
+          notNull: true,
+          errMsg: "This field is required."
         }
       },
       city: {
@@ -115,9 +121,9 @@ export default {
       },
     },
     /* 
-      pentalInfo
+      rentalInfo
     */
-    pentalInfo: {
+    rentalInfo: {
 			totalGrossMonthlyIncome:{
         type: 'input',
         placeholder: '$',
