@@ -15,7 +15,7 @@ export default {
           isValid: true,
           type: "string",
           notNull: true,
-          errMsg: "This field is required."
+          errMsg: "Required field."
         }
       },
       propertyAddress: {
@@ -28,7 +28,7 @@ export default {
           isValid: true,
           type: "string",
           notNull: true,
-          errMsg: "This field is required."
+          errMsg: "Required field."
         }
       },
       city: {
@@ -67,7 +67,7 @@ export default {
           isValid: true,
           type: "integer",
           notNull: false,
-          errMsg: "This field is required."
+          errMsg: "Required field."
         }
       },
       repairCost: {

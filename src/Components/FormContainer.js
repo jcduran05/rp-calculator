@@ -12,9 +12,9 @@ class FormContainer extends Component {
   constructor(props) {
     super(props)
 
-    const formSection = ['propertyInfo', 'purchaseInfo', 'rentalInfo']
+    const formSections = ['propertyInfo', 'purchaseInfo', 'rentalInfo']
     let formValidationObj = {}
-    formSection.forEach (s => {
+    formSections.forEach (s => {
       for (let key in formDetails[s]) {
         if (formDetails[s][key].hasOwnProperty('validation')) {
           formValidationObj[key] = formDetails[s][key]['validation']
@@ -49,49 +49,16 @@ class FormContainer extends Component {
       })
     }
 
-    return this.setState({ 
-      property: {
-      // Property Info
-      reportTitle: '',
-      propertyAddress: '',
-      city: '',
-      state: '',
-      zip: '',
-      
-      // Purchase Info
-      purchasePrice: 0,
-      repairCost: 0,
-      annualPropertyTaxes: 0,
-      purchaseClosingCost: 0,
-      afterRepairValue: 0,
-
-      downPaymentPercent: 0,
-      loanInterestRate: 0,
-      amortizedOverHowManyYears: 0,
-
-      // Rental Income
-      totalGrossMonthlyIncome: 0,
-      otherMonthlyIncome: 0,
-      electricity: 0,
-      waterAndSewer: 0,
-      garbage: 0,
-      pmi: 0,
-      hoas: 0,
-      monthlyInsurance: 0,
-      propertyTaxes: 0,
-      otherExpenses: 0,
-
-      vacancy: 0,
-      maintenance : 0,
-      capitalExpenditure: 0,
-      managementFee: 0,
-
-      annualIncomeGrowth: 0,
-      annualPVGrowth: 0,
-      annualExpensesGrowth: 0,
-      salesExpenses: 0,
+    const formSections = ['propertyInfo', 'purchaseInfo', 'rentalInfo']
+    let propertyObj = {}
+    formSections.forEach (s => {
+      for (let key in formDetails[s]) {
+        if (formDetails[s][key].hasOwnProperty('validation')) {
+          propertyObj[key] = ''
+        }
       }
     })
+    return this.setState({property: propertyObj})
   }
 
   changeHandler = event => {
@@ -113,16 +80,17 @@ class FormContainer extends Component {
         }
       })
     )
-
     // this.setState({isValid: false})
   }
 
   submitFormHandler = event => {
     event.preventDefault();
     let propertyObj = this.state.property
+    console.log(propertyObj);
 
     for (let validationKey in this.state.formValidation) {
       let validationObject = this.state.formValidation[validationKey]
+      //FormCreatorValidation(validationObject)
       if (validationObject.notNull && this.state.property[validationKey].length == 0) {
         this.setState(prevState => ({ formValidation: {
               ...prevState.formValidation,
@@ -133,7 +101,6 @@ class FormContainer extends Component {
             }
           })
         )
-        this.setState({isValid: false})
       } else {
         this.setState(prevState => ({ formValidation: {
               ...prevState.formValidation,
@@ -198,7 +165,7 @@ class FormContainer extends Component {
         <Button variant="primary" type="submit">
             Submit
         </Button>
-        {/* {!this.state.isValid && <div><br/><div className="alert alert-danger" role="alert"> {this.state.formErrors.reportTitle} </div></div>} */}
+        {!this.state.isValid && <div><br/><div className="alert alert-danger" role="alert">Please fill out the form.</div></div>}
       </Form>
     )
   }
