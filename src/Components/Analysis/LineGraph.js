@@ -14,11 +14,10 @@ export default class LineGraph extends PureComponent {
     
     componentDidMount() {
         const myLineRef = this.lineChartRef.current.getContext("2d");
-        let labels = this.state.years;
         let balance = [];
         let period = 13
         for (let year in this.state.yearsAnalysis) {
-					if (this.state.yearsAnalysis[year] == 1) {
+					if (this.state.yearsAnalysis[year] === 1) {
 						let b = this.state.schedule[period][3]
 						balance.push(Math.floor(b))
 					} else {

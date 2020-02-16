@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Table, Button } from 'react-bootstrap';
+import { Col, Row, Table } from 'react-bootstrap';
 import LineGraph from './LineGraph';
 
 function OverYears(props) {

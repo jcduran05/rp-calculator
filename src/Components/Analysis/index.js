@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropertiesConsumer } from '../PropertiesProvider';
+import { PropertiesConsumer } from '../../Providers/PropertiesProvider';
 import Report from './Report';
 
 function Analysis(props) {

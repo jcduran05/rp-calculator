@@ -1,6 +1,6 @@
 import React from 'react';
 import UserReports from './UserReports';
-import { PropertiesConsumer } from './PropertiesProvider';
+import { PropertiesConsumer } from '../Providers/PropertiesProvider';
 
 function Home (props) {
 	return(

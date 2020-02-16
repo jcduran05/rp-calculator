@@ -1,11 +1,10 @@
 import React from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 function FormGroupCreator(props) {
 	const { formDetails } = props // formDetails
 	const fd = formDetails;
 	let changeHandler = props.onChange;
-	let validHandler = props.validHandler;
 	let formGroupState = props.state.property[props.id]
 	let formattedLabel = props.id.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
 	formattedLabel = formattedLabel.charAt(0).toUpperCase() + formattedLabel.slice(1);
@@ -25,9 +24,9 @@ function FormGroupCreator(props) {
 	}
 
 	let classNames = Object.keys(fd.size).map (sKey => {
-		if (sKey == 'sm') { return `col-sm-${fd.size[sKey]}` } else { return `col-sm-${fd.size['default']}` };
-		if (sKey == 'md') { return `col-md-${fd.size[sKey]}` } else { return `col-md-${fd.size['default']}` };
-		if (sKey == 'lg') { return `col-lg-${fd.size[sKey]}` } else { return `col-lg-${fd.size['default']}` };
+		if (sKey === 'sm') { return `col-sm-${fd.size[sKey]}` } else { return `col-sm-${fd.size['default']}` };
+		if (sKey === 'md') { return `col-md-${fd.size[sKey]}` } else { return `col-md-${fd.size['default']}` };
+		if (sKey === 'lg') { return `col-lg-${fd.size[sKey]}` } else { return `col-lg-${fd.size['default']}` };
 	})
 	let classNamesFormatted = classNames.join(" ");
 

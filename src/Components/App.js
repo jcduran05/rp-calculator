@@ -1,13 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import PropertiesProvider from './PropertiesProvider';
+import React, { useContext } from 'react';
+import { BrowserRouter as Switch, Route } from "react-router-dom";
+import PropertiesProvider from '../Providers/PropertiesProvider';
+import { UserContext } from '../Providers/UserProvider';
 
 import './App.css';
 import { Container, Col, Navbar, Nav } from 'react-bootstrap';
 
+import Authentication from './Authentication';
+
 import Home from './Home';
 import Analysis from './Analysis';
 import Form from './Form';
+
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 /* Things to do
 1. Find way to make sure state and formData match
@@ -17,6 +23,8 @@ import Form from './Form';
 */
 
 function App(props) {
+  const user = useContext(UserContext) || {};
+
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -25,19 +33,23 @@ function App(props) {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/create">Create Report</Nav.Link>
         </Nav>
+        <Nav>
+          <Authentication />
+        </Nav>
       </Navbar>
+      {/* <Authentication /> */}
       <Container>
         <Col md={12}>
-        <PropertiesProvider>
-        <Router>
+          <PropertiesProvider>
           <Switch>
-          <Route exact path="/" component={() => <Home />} />
-          <Route exact path="/create" component={props => <Form {...props} />} />
-          <Route exact path="/show/:id" component={props => <Analysis {...props} />} />
-          <Route exact path="/edit/:id" component={props => <Form {...props} />} />
-          </Switch> 
-        </Router>
-        </PropertiesProvider>
+            <Route exact path="/" component={() => <Home />} />
+            <Route exact path="/create" component={props => <Form {...props} />} />
+            <Route exact path="/show/:id" component={props => <Analysis {...props} />} />
+            <Route exact path="/edit/:id" component={props => <Form {...props} />} />
+            <Route exact path="/login" component={() => <SignIn {...user} />} />
+            <Route exact path="/register" component={() => <SignUp {...user} />} />
+          </Switch>
+          </PropertiesProvider>
         </Col>
       </Container>
     </div>
