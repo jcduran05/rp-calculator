@@ -27,8 +27,6 @@ class FormContainer extends Component {
       property: {},
       isValid: true,
       formValidation: formValidationObj,
-      uid: this.props.user.uid
-      
     }
 
     this.initialState = this.initialState.bind(this)
@@ -43,10 +41,11 @@ class FormContainer extends Component {
   initialState = () => {
     let properties = this.props.state.properties
     let propertyId = this.props.routingProps.match.params.id
-    if (propertyId) {
+    let user = this.props.user
+    if (propertyId && user) {
       return this.setState({
         isEdit: true,
-        property: properties[propertyId]
+        property: properties[propertyId],
       })
     }
 
@@ -87,7 +86,6 @@ class FormContainer extends Component {
   submitFormHandler = event => {
     event.preventDefault();
     let propertyObj = this.state.property
-    console.log(propertyObj);
 
     for (let validationKey in this.state.formValidation) {
       let validationObject = this.state.formValidation[validationKey]
@@ -130,7 +128,7 @@ class FormContainer extends Component {
         const updatedProperty = {}
         // updatedProperty[`/properties/${this.state.uid}/${this.state.property.firebaseKey}`] = this.state.property
         // return firebase.database().ref().update(updatedProperty)
-        return firestore.collection(`properties/${this.state.uid}`).doc(this.state.property.firebaseKey).update({...this.state.property})
+        return firestore.collection('properties').update({...this.state.property})
       } else {
         // Setting up properties "table" and push adds new object instead up
         // resetting a single object. Promise but no helpful server side error msgs
@@ -139,7 +137,10 @@ class FormContainer extends Component {
         // this.setState(resetstate)
         // return propertiesRef.push({...this.state.property})
 
-        return firestore.collection(`properties/${this.state.uid}`).doc(this.state.property.firebaseKey).add({...this.state.property})
+        // console.log("----")
+        // console.log(firestore.collection('users').doc(`${this.state.uid}`))
+        // console.log("----")
+        return firestore.collection('properties').add({...this.state.property})
       }
 
     } else {

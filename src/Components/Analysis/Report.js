@@ -4,6 +4,7 @@ import PieGraph from './PieGraph';
 import OverYears from './OverYears';
 
 function Report(props) {
+  console.log(props)
   const propertyID = props.routingProps.match.params.id;
   const p = props.properties[propertyID];
 

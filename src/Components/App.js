@@ -25,6 +25,10 @@ import SignUp from './SignUp';
 function App(props) {
   const user = useContext(UserContext) || {};
 
+	if (!user.hasOwnProperty('uid')) {
+      return (<></>)
+  }
+
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -40,15 +44,15 @@ function App(props) {
       {/* <Authentication /> */}
       <Container>
         <Col md={12}>
-          <PropertiesProvider>
-          <Switch>
-            <Route exact path="/" component={() => <Home />} />
-            <Route exact path="/create" component={props => <Form {...props} />} />
-            <Route exact path="/show/:id" component={props => <Analysis {...props} />} />
-            <Route exact path="/edit/:id" component={props => <Form {...props} />} />
-            <Route exact path="/login" component={() => <SignIn {...user} />} />
-            <Route exact path="/register" component={() => <SignUp {...user} />} />
-          </Switch>
+          <PropertiesProvider user={user}>
+            <Switch>
+              <Route exact path="/" component={() => <Home />} />
+              <Route exact path="/create" component={props => <Form {...props} user={user} />} />
+              <Route exact path="/show/:id" component={props => <Analysis {...props} />} />
+              <Route exact path="/edit/:id" component={props => <Form {...props} />} />
+              <Route exact path="/login" component={() => <SignIn {...user} />} />
+              <Route exact path="/register" component={() => <SignUp {...user} />} />
+            </Switch>
           </PropertiesProvider>
         </Col>
       </Container>

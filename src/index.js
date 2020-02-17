@@ -13,9 +13,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 render(
     <Router>
       <UserProvider>
-        {/* <PropertiesProvider> */}
-          <App />
-        {/* </PropertiesProvider> */}
+        <App />
       </UserProvider>
     </Router>,
     document.getElementById('root'),

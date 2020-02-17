@@ -6,12 +6,16 @@ import { UserContext } from '../Providers/UserProvider';
 
 function Home (props) {
 	let routingProps = props;
-	const user = useContext(UserContext);
+	const user = useContext(UserContext) || {};
+
+	if (!user.hasOwnProperty('uid')){
+      return (<></>)
+    }
 	
 	return(
 		<PropertiesConsumer>
 		{(props) => (
-			<FormContainer routingProps={routingProps} user={user} {...props} />
+			<FormContainer routingProps={routingProps} {...props} user={user} />
 		)}
 		</PropertiesConsumer>
 	)
