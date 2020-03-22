@@ -41,14 +41,15 @@ class PropertiesProvider extends Component {
   }
 
   handleDelete(id) {
-    // const propertiesRef = firestore.database().ref('properties');
-    // return propertiesRef.child(id).remove()
-    // .then(() => {
-    //   console.log("property deleted")
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // });
+    const propertiesRef = firestore.collection('properties');
+    return propertiesRef.doc(id).delete()
+    .then(() => {
+      console.log("property deleted")
+      return <Redirect to={`/`} />
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   handleEdit(id) {
