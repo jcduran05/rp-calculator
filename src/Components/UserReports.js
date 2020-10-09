@@ -9,6 +9,7 @@ function UserReports(props) {
         <tr key={idx}>
             <td>{idx + 1}</td>
             <td>{property.reportTitle}</td>
+            <td>{property.city}</td>
             <td><Link to={`/show/${property.key}`}>Report</Link></td>
             <td>
                 <Link className="btn-spacer btn btn-outline-primary btn-sm" 
@@ -34,6 +35,7 @@ function UserReports(props) {
                     <tr>
                         <th>#</th>
                         <th>Title</th>
+                        <th>City</th>
                         <th>Analysis</th>
                         <th>Actions</th>
                     </tr>

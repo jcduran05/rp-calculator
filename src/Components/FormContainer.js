@@ -4,6 +4,7 @@ import { firestore } from '../firebase.js'; // configs ignored file
 import './App.css';
 import { Form, Button } from 'react-bootstrap';
 import formDetails from './FormData';
+import Scraper from './Scraper';
 import PropertyInfo from './PropertyInfo';
 import PurchaseInfo from './PurchaseInfo';
 import RentalInfo from './RentalInfo';
@@ -127,6 +128,11 @@ class FormContainer extends Component {
   render() {
     return (
       <Form onSubmit={this.submitFormHandler}>
+        {/* <Scraper state={this.state} 
+        formDetails={formDetails.scraper} 
+        onChange={this.changeHandler}
+        validHandler={this.validHandler}
+        /> */}
         <PropertyInfo state={this.state} 
         formDetails={formDetails.propertyInfo} 
         onChange={this.changeHandler}

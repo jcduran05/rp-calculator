@@ -2,6 +2,22 @@ export default {
     /* 
       propertyInfo
     */
+    scraper: {
+      URL: {
+        type: 'input',
+        placeholder: '',
+        size: {
+          default: 8,
+          sm: 8,
+          md: 8
+        },
+        validation: {
+          isValid: true,
+          type: "string",
+          notNull: false,
+        }
+      },
+    },
     propertyInfo: {
       reportTitle: {
         type: 'input',

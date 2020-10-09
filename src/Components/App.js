@@ -25,9 +25,9 @@ import SignUp from './SignUp';
 function App(props) {
   const user = useContext(UserContext) || {};
 
-	if (!user.hasOwnProperty('uid')) {
-      return (<></>)
-  }
+	// if (!user.hasOwnProperty('uid')) {
+  //     return (<></>)
+  // }
 
   return (
     <div className="App">
