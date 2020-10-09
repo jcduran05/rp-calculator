@@ -6,4 +6,4 @@ Rental Property Calculator
 
 ![Create a report](https://github.com/jcduran05/rp-calculator/blob/master/features-2.png)
 
-![Report Analysis](hhttps://github.com/jcduran05/rp-calculator/blob/master/features-3.png)
+![Report Analysis](https://github.com/jcduran05/rp-calculator/blob/master/features-3.png)
